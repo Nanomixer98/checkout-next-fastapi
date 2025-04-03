@@ -12,6 +12,7 @@ import { CheckoutPresenter } from '@/framework/presenters/checkout-presenter';
 import { ValidateCustomerInfoUseCase } from '@/application/use-cases/validate-customer-info-use-case';
 import { ProcessPaymentUseCase } from '@/application/use-cases/process-payment-use-case';
 import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
+import { type CounterStore, createCounterStore } from '../stores/cart-store';
 
 export function OrderSummaryComponent() {
   // Inicializamos los use cases y el presenter
@@ -28,12 +29,17 @@ export function OrderSummaryComponent() {
   // Obtenemos los datos del resumen de la orden
   const orderSummary = presenter.getOrderSummary();
 
+  const bears = useBearStore((state) => state.bears);
+  const increasePopulation = useBearStore((state) => state.bears);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Order Summary</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        <h1>{bears} around here ...</h1>
+        <button onClick={increasePopulation}>one up</button>
         <div className="space-y-2">
           {orderSummary.items.map((item) => (
             <div key={item.id} className="flex justify-between">
