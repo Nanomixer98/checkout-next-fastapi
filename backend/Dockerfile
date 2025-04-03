@@ -1,30 +1,30 @@
-FROM node:20-alpine
+FROM python:3.9-slim
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-# COPY package*.json ./
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-# RUN npm install
+# Copy the requirements file to the working directory
+COPY requirements.txt .
 
-# Copy the rest of the application code
+# Install the dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code to the working directory
 COPY . .
 
 # Set environment variables
-ENV POSTGRES_HOST=0.0.0.0
-ENV POSTGRES_PORT=5432
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_DB=postgres
-ENV TOKEN=5efb6d2a2d692df0d0595de9540eede3
+ENV ENV=dev
+ENV DB=postgresql
+ENV DB_USER=postgres
+ENV DB_PASSWORD=postgres
+ENV DB_HOST=0.0.0.0
+ENV DB_PORT=5432
 
-# Build the NestJS app
-# RUN npm run build
-
-# Expose the port that the app runs on
-EXPOSE 3000
-
-# Start the NestJS application
-CMD npm run typeorm:run && npm run start:prod
+# Comando para ejecutar la aplicación
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

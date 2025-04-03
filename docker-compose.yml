@@ -12,27 +12,29 @@ services:
     volumes:
       - klu-postgres-data:/var/lib/postgresql/data
 
-  # frontend:
-  #   build:
-  #     context: ./website
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '5173:80'
+  frontend:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    environment:
+      BACKEND_URL: http://localhost:8000
+    ports:
+      - '5173:80'
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '3000:8000'
     depends_on:
       - postgres
     environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB: postgres
 
 volumes:
   klu-postgres-data:
