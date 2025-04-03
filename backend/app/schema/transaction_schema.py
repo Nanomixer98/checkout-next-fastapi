@@ -1,7 +1,9 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from enum import Enum
+from app.util.schema import AllOptional
+from app.schema.base_schema import FindBase
 from uuid import UUID
 
 
@@ -20,12 +22,12 @@ class TransactionType(str, Enum):
 
 
 class TransactionBase(BaseModel):
-    amount: float = Field(..., description="Monto de la transacción")
-    currency: str = Field(default="USD", description="Moneda de la transacción")
-    status: TransactionStatus = Field(
+    amount: Optional[float] = Field(None, description="Monto de la transacción")
+    currency: Optional[str] = Field(None, description="Moneda de la transacción")
+    status: Optional[TransactionStatus] = Field(
         default=TransactionStatus.PENDING, description="Estado de la transacción"
     )
-    type: TransactionType = Field(..., description="Tipo de transacción")
+    type: Optional[TransactionType] = Field(None, description="Tipo de transacción")
     description: Optional[str] = Field(
         None, description="Descripción opcional de la transacción"
     )
@@ -38,13 +40,6 @@ class TransactionCreate(TransactionBase):
     pass
 
 
-class TransactionUpdate(TransactionBase):
-    amount: Optional[float] = None
-    currency: Optional[str] = None
-    status: Optional[TransactionStatus] = None
-    type: Optional[TransactionType] = None
-
-
 class TransactionInDB(TransactionBase):
     id: UUID
     created_at: datetime
@@ -53,5 +48,11 @@ class TransactionInDB(TransactionBase):
         from_attributes = True
 
 
-class Transaction(TransactionInDB):
-    pass
+class FindTransaction(FindBase, TransactionBase): ...
+
+
+class Transaction(TransactionInDB): ...
+
+
+class TransactionsResult(BaseModel):
+    founds: Optional[List[Transaction]]

@@ -3,17 +3,23 @@ from fastapi import APIRouter, Depends
 from uuid import UUID
 from app.core.container import Container
 from app.core.middleware import inject
-from app.schema.transaction_schema import Transaction
+from app.schema.transaction_schema import (
+    Transaction,
+    TransactionsResult,
+    FindTransaction,
+)
 from app.services.transaction_service import TransactionService
 
 router = APIRouter(prefix="/transactions", tags=["transactions"], dependencies=[])
 
 
-@router.get("", response_model=str)
+@router.get("", response_model=TransactionsResult)
 @inject
-def get_transaction_list():
-    return "NOT IMPLEMENTED YET"
-    # return service.get_list(find_query)
+def get_transaction_list(
+    find_query: FindTransaction = Depends(),
+    service: TransactionService = Depends(Provide[Container.transaction_service]),
+):
+    return service.get_list(find_query)
 
 
 @router.post("", response_model=str)

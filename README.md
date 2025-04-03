@@ -15,3 +15,8 @@ pip install -r requirements.txt
 # or if you have trouble with the previous command
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
 ```
+
+### Run backend
+```bash
+uvicorn main:app --reload
+```
