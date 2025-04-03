@@ -18,7 +18,6 @@ export class ProcessPaymentUseCase {
     payment: Payment,
     order: Order
   ): Promise<PaymentResult> {
-    console.log('processing payment');
     // Validaciones de negocio
     if (!customer || !payment || !order) {
       console.error('Missing required information for payment processing');
@@ -26,17 +25,13 @@ export class ProcessPaymentUseCase {
     }
 
     if (!payment.isValid()) {
-      console.log({ payment });
-      console.error('Invalid payment information');
       throw new Error('Invalid payment information');
     }
 
     if (order.getTotal() <= 0) {
-      console.error('Order total must be greater than zero');
       throw new Error('Order total must be greater than zero');
     }
 
-    console.log('before processPayment');
     // Procesar el pago
     const result = await this.paymentRepository.processPayment(
       customer,

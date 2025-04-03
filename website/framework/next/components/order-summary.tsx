@@ -1,5 +1,9 @@
 'use client';
 
+import { CreateOrderUseCase } from '@/application/use-cases/create-order-use-case';
+import { ProcessPaymentUseCase } from '@/application/use-cases/process-payment-use-case';
+import { ValidateCustomerInfoUseCase } from '@/application/use-cases/validate-customer-info-use-case';
+import { formatCurrency } from '@/domain/utils';
 import {
   Card,
   CardContent,
@@ -7,12 +11,8 @@ import {
   CardTitle,
 } from '@/framework/next/components/ui/card';
 import { Separator } from '@/framework/next/components/ui/separator';
-import { CreateOrderUseCase } from '@/application/use-cases/create-order-use-case';
 import { CheckoutPresenter } from '@/framework/presenters/checkout-presenter';
-import { ValidateCustomerInfoUseCase } from '@/application/use-cases/validate-customer-info-use-case';
-import { ProcessPaymentUseCase } from '@/application/use-cases/process-payment-use-case';
 import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
-import { type CounterStore, createCounterStore } from '../stores/cart-store';
 
 export function OrderSummaryComponent() {
   // Inicializamos los use cases y el presenter
@@ -29,17 +29,12 @@ export function OrderSummaryComponent() {
   // Obtenemos los datos del resumen de la orden
   const orderSummary = presenter.getOrderSummary();
 
-  const bears = useBearStore((state) => state.bears);
-  const increasePopulation = useBearStore((state) => state.bears);
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Order Summary</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <h1>{bears} around here ...</h1>
-        <button onClick={increasePopulation}>one up</button>
         <div className="space-y-2">
           {orderSummary.items.map((item) => (
             <div key={item.id} className="flex justify-between">
@@ -47,7 +42,7 @@ export function OrderSummaryComponent() {
                 {item.name} × {item.quantity}
               </span>
               <span className="text-sm font-medium">
-                ${(item.price * item.quantity).toFixed(2)}
+                {formatCurrency(item.price * item.quantity)}
               </span>
             </div>
           ))}
@@ -58,15 +53,15 @@ export function OrderSummaryComponent() {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>Subtotal</span>
-            <span>${orderSummary.subtotal.toFixed(2)}</span>
+            <span>{formatCurrency(orderSummary.subtotal)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span>Shipping</span>
-            <span>${orderSummary.shipping.toFixed(2)}</span>
+            <span>{formatCurrency(orderSummary.shipping)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span>Tax</span>
-            <span>${orderSummary.tax.toFixed(2)}</span>
+            <span>{formatCurrency(orderSummary.tax)}</span>
           </div>
         </div>
 
@@ -74,7 +69,7 @@ export function OrderSummaryComponent() {
 
         <div className="flex justify-between font-medium">
           <span>Total</span>
-          <span>${orderSummary.total.toFixed(2)}</span>
+          <span>{formatCurrency(orderSummary.total)}</span>
         </div>
       </CardContent>
     </Card>

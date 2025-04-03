@@ -1,6 +1,5 @@
 'use client';
 
-import { useFormContext } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -17,6 +16,7 @@ import {
   SelectValue,
 } from '@/framework/next/components/ui/select';
 import { CreditCard, Lock } from 'lucide-react';
+import { useFormContext } from 'react-hook-form';
 
 export function PaymentInfoFields() {
   const { control, setValue, watch } = useFormContext();

@@ -1,9 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { CreateOrderUseCase } from '@/application/use-cases/create-order-use-case';
+import { ProcessPaymentUseCase } from '@/application/use-cases/process-payment-use-case';
+import { ValidateCustomerInfoUseCase } from '@/application/use-cases/validate-customer-info-use-case';
+import type { CustomerInfo } from '@/domain/entities/customer';
+import type { PaymentInfo } from '@/domain/entities/payment';
+import { CustomerInfoFields } from '@/framework/next/components/customer-info-fields';
+import { OrderSummaryComponent } from '@/framework/next/components/order-summary';
+import { PaymentInfoFields } from '@/framework/next/components/payment-info-fields';
 import { Alert, AlertDescription } from '@/framework/next/components/ui/alert';
-import { AlertCircle, CreditCard, User } from 'lucide-react';
 import { Button } from '@/framework/next/components/ui/button';
 import {
   Card,
@@ -17,24 +22,13 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/framework/next/components/ui/tabs';
-
-// Importamos los componentes de formulario
-import { CustomerInfoFields } from '@/framework/next/components/customer-info-fields';
-import { PaymentInfoFields } from '@/framework/next/components/payment-info-fields';
-import { OrderSummaryComponent } from '@/framework/next/components/order-summary';
-
-// Importamos los use cases y repositorios
-import type { CustomerInfo } from '@/domain/entities/customer';
-import type { PaymentInfo } from '@/domain/entities/payment';
-import { ProcessPaymentUseCase } from '@/application/use-cases/process-payment-use-case';
-import { ValidateCustomerInfoUseCase } from '@/application/use-cases/validate-customer-info-use-case';
-import { CreateOrderUseCase } from '@/application/use-cases/create-order-use-case';
-import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
 import { CheckoutPresenter } from '@/framework/presenters/checkout-presenter';
-
-// Importamos los validadores
+import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, FormProvider } from 'react-hook-form';
+import { AlertCircle, CreditCard, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 // Definimos el esquema de validación combinado

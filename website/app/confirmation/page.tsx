@@ -1,8 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { CheckCircle } from 'lucide-react';
+import { formatCurrency } from '@/domain/utils';
 import { Button } from '@/framework/next/components/ui/button';
 import {
   Card,
@@ -11,6 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/framework/next/components/ui/card';
+import { CheckCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function ConfirmationPage() {
   const searchParams = useSearchParams();
@@ -35,7 +36,9 @@ export default function ConfirmationPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Amount:</span>
-              <span className="font-medium">${amount}</span>
+              <span className="font-medium">
+                {formatCurrency(Number(amount))}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Status:</span>
