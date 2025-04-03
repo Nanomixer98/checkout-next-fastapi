@@ -5,6 +5,7 @@ from app.core.container import Container
 from app.core.middleware import inject
 from app.schema.transaction_schema import (
     Transaction,
+    TransactionCreate,
     TransactionsResult,
     FindTransaction,
 )
@@ -22,11 +23,13 @@ def get_transaction_list(
     return service.get_list(find_query)
 
 
-@router.post("", response_model=str)
+@router.post("", response_model=Transaction)
 @inject
-def post_transaction():
-    return "NOT IMPLEMENTED YET"
-    # return service.add(user)
+def post_transaction(
+    transaction: TransactionCreate,
+    service: TransactionService = Depends(Provide[Container.transaction_service]),
+):
+    return service.process_transaction(transaction)
 
 
 @router.get("/{transaction_id}", response_model=Transaction)

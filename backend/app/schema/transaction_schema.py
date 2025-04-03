@@ -36,8 +36,12 @@ class TransactionBase(BaseModel):
     )
 
 
-class TransactionCreate(TransactionBase):
-    pass
+class TransactionCreate(BaseModel):
+    amount: float = Field(None, description="Monto de la transacción")
+    currency: str = Field(None, description="Moneda de la transacción")
+    description: str = Field(None, description="Descripción opcional de la transacción")
+    customer_email: str = Field(None, description="Email del cliente")
+    customer_name: str = Field(None, description="Nombre del cliente")
 
 
 class TransactionInDB(TransactionBase):
