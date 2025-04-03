@@ -12,13 +12,13 @@ import {
 } from '@/framework/next/components/ui/card';
 import { Separator } from '@/framework/next/components/ui/separator';
 import { CheckoutPresenter } from '@/framework/presenters/checkout-presenter';
-import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
+import { InternalPaymentRepository } from '@/infrastructure/repositories/internal-payment-repository';
 
 export function OrderSummaryComponent() {
   // Inicializamos los use cases y el presenter
   const validateCustomerInfoUseCase = new ValidateCustomerInfoUseCase();
   const createOrderUseCase = new CreateOrderUseCase();
-  const paymentRepository = new StripePaymentRepository();
+  const paymentRepository = new InternalPaymentRepository();
   const processPaymentUseCase = new ProcessPaymentUseCase(paymentRepository);
   const presenter = new CheckoutPresenter(
     validateCustomerInfoUseCase,

@@ -7,11 +7,7 @@ import type {
 } from '../../domain/repositories/payment-repository';
 
 export class ProcessPaymentUseCase {
-  private paymentRepository: PaymentRepository;
-
-  constructor(paymentRepository: PaymentRepository) {
-    this.paymentRepository = paymentRepository;
-  }
+  constructor(private paymentRepository: PaymentRepository) {}
 
   async execute(
     customer: Customer,

@@ -23,7 +23,7 @@ import {
   TabsTrigger,
 } from '@/framework/next/components/ui/tabs';
 import { CheckoutPresenter } from '@/framework/presenters/checkout-presenter';
-import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
+import { InternalPaymentRepository } from '@/infrastructure/repositories/internal-payment-repository';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle, CreditCard, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -71,7 +71,7 @@ export default function CheckoutPanel() {
   // Inicializamos los use cases y el presenter
   const validateCustomerInfoUseCase = new ValidateCustomerInfoUseCase();
   const createOrderUseCase = new CreateOrderUseCase();
-  const paymentRepository = new StripePaymentRepository();
+  const paymentRepository = new InternalPaymentRepository();
   const processPaymentUseCase = new ProcessPaymentUseCase(paymentRepository);
   const presenter = new CheckoutPresenter(
     validateCustomerInfoUseCase,

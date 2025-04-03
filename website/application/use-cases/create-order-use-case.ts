@@ -2,7 +2,6 @@ import { type OrderItem, Order } from '../../domain/entities/order';
 
 export class CreateOrderUseCase {
   execute(items: OrderItem[], taxRate = 0.08, shipping = 5.99): Order {
-    console.log('executing use case');
     // Validaciones de negocio
     if (!items || items.length === 0) {
       throw new Error('Order must contain at least one item');

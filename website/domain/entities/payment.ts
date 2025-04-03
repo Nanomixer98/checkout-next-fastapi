@@ -12,11 +12,7 @@ export interface PaymentMethod {
 }
 
 export class Payment {
-  private info: PaymentInfo;
-
-  constructor(info: PaymentInfo) {
-    this.info = info;
-  }
+  constructor(private info: PaymentInfo) {}
 
   getMaskedCardNumber(): string {
     const cleaned = this.info.cardNumber.replace(/\s+/g, '');
