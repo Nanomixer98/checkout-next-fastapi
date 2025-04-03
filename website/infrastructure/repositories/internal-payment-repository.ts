@@ -15,7 +15,7 @@ export class InternalPaymentRepository implements PaymentRepository {
   ): Promise<PaymentResult> {
     return new Promise((resolve) => {
       BackendApi.getInstance()
-        .get('/payments', {
+        .post('/transactions', {
           params: {
             email: customer.getEmail(),
             paymentInfo: payment.getInfo(),
@@ -30,22 +30,54 @@ export class InternalPaymentRepository implements PaymentRepository {
           });
         });
     });
-    // return new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     // Simulamos un pago exitoso (95% de las veces)
-    //     if (Math.random() > 0.05) {
-    //       const orderId = `ORD-${Date.now()}-${Math.floor(
-    //         Math.random() * 1000
-    //       )}`;
-    //       resolve({
-    //         success: true,
-    //         orderId: orderId,
-    //       });
-    //     } else {
-    //       // Simulamos un fallo en el pago (5% de las veces)
-    //       reject(new Error('Payment processing failed. Please try again.'));
-    //     }
-    //   }, 1500); // Simulamos retraso de red
-    // });
+  }
+
+  async getPaymentStatus(
+    customer: Customer,
+    payment: Payment,
+    order: Order
+  ): Promise<PaymentResult> {
+    return new Promise((resolve) => {
+      const id = 1;
+      BackendApi.getInstance()
+        .get(`/transactions/${id}`, {
+          params: {
+            email: customer.getEmail(),
+            paymentInfo: payment.getInfo(),
+            orderTotal: order.getTotal(),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          resolve({
+            success: true,
+            orderId: '',
+          });
+        });
+    });
+  }
+
+  getPayments(
+    customer: Customer,
+    payment: Payment,
+    order: Order
+  ): Promise<PaymentResult> {
+    return new Promise((resolve) => {
+      const id = BackendApi.getInstance()
+        .get('/transactions/', {
+          params: {
+            email: customer.getEmail(),
+            paymentInfo: payment.getInfo(),
+            orderTotal: order.getTotal(),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          resolve({
+            success: true,
+            orderId: '',
+          });
+        });
+    });
   }
 }
