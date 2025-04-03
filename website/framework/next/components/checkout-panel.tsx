@@ -135,6 +135,7 @@ export default function CheckoutPanel() {
         `/confirmation?orderId=${result.orderId}&amount=${result.amount}&status=completed`
       );
     } catch (err) {
+      console.error(err);
       if (err instanceof Error) {
         setError(err.message);
       } else {

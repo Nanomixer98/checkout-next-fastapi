@@ -62,7 +62,7 @@ export class CheckoutPresenter {
     // Convertir resultado a DTO para la UI
     return {
       success: result.success,
-      orderId: result.orderId,
+      orderId: result.data!.id,
       amount: order.getTotal(),
       message: result.message,
     };

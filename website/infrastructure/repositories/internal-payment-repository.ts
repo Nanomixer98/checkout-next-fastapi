@@ -2,31 +2,32 @@ import type { Customer } from '../../domain/entities/customer';
 import type { Payment } from '../../domain/entities/payment';
 import type { Order } from '../../domain/entities/order';
 import type {
+  PaymentApiBody,
+  GenericResponse,
   PaymentRepository,
-  PaymentResult,
+  PaymentResponse,
 } from '../../domain/repositories/payment-repository';
 import BackendApi from '../axios/BackendApi';
 
 export class InternalPaymentRepository implements PaymentRepository {
-  async processPayment(
-    customer: Customer,
-    payment: Payment,
-    order: Order
-  ): Promise<PaymentResult> {
+  processPayment(apiBody: PaymentApiBody): Promise<PaymentResponse> {
     return new Promise((resolve) => {
       BackendApi.getInstance()
-        .post('/transactions', {
-          params: {
-            email: customer.getEmail(),
-            paymentInfo: payment.getInfo(),
-            orderTotal: order.getTotal(),
-          },
-        })
+        .post('/transactions', apiBody)
         .then((response) => {
-          console.log(response);
           resolve({
             success: true,
-            orderId: '',
+            data: response.data,
+          });
+        })
+        .catch((error) => {
+          console.error('Payment processing error:', error);
+          resolve({
+            success: false,
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Payment processing failed',
           });
         });
     });
@@ -36,46 +37,54 @@ export class InternalPaymentRepository implements PaymentRepository {
     customer: Customer,
     payment: Payment,
     order: Order
-  ): Promise<PaymentResult> {
+  ): Promise<GenericResponse> {
+    const id = 1;
     return new Promise((resolve) => {
-      const id = 1;
       BackendApi.getInstance()
-        .get(`/transactions/${id}`, {
-          params: {
-            email: customer.getEmail(),
-            paymentInfo: payment.getInfo(),
-            orderTotal: order.getTotal(),
-          },
-        })
+        .get(`/transactions/${id}`)
         .then((response) => {
-          console.log(response);
           resolve({
             success: true,
+            orderId: response.data.id || '',
+            message: 'Payment status retrieved successfully',
+          });
+        })
+        .catch((error) => {
+          console.error('Error getting payment status:', error);
+          resolve({
+            success: false,
             orderId: '',
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Failed to get payment status',
           });
         });
     });
   }
 
-  getPayments(
+  async getPayments(
     customer: Customer,
     payment: Payment,
     order: Order
-  ): Promise<PaymentResult> {
+  ): Promise<GenericResponse> {
     return new Promise((resolve) => {
-      const id = BackendApi.getInstance()
-        .get('/transactions/', {
-          params: {
-            email: customer.getEmail(),
-            paymentInfo: payment.getInfo(),
-            orderTotal: order.getTotal(),
-          },
-        })
+      BackendApi.getInstance()
+        .get('/transactions')
         .then((response) => {
-          console.log(response);
           resolve({
             success: true,
             orderId: '',
+            message: 'Payments retrieved successfully',
+          });
+        })
+        .catch((error) => {
+          console.error('Error getting payments:', error);
+          resolve({
+            success: false,
+            orderId: '',
+            message:
+              error instanceof Error ? error.message : 'Failed to get payments',
           });
         });
     });

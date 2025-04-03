@@ -8,7 +8,7 @@ The app consists of a Frontend (Next, TailwindCSS) connected to a Backend REST A
 
 ```
 checkout-next-fastapi/
-├── frontend/          # Next.js frontend application
+├── website/          # Next.js frontend application
 ├── backend/          # FastAPI backend application
 └── README.md
 ```
@@ -78,7 +78,7 @@ yarn install
 ```bash
 # From the root directory
 cd backend
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 The API will be available at `http://localhost:8000`
