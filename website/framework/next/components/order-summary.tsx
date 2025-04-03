@@ -1,23 +1,32 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { CreateOrderUseCase } from "@/application/use-cases/create-order-use-case"
-import { CheckoutPresenter } from "@/framework/presenters/checkout-presenter"
-import { ValidateCustomerInfoUseCase } from "@/application/use-cases/validate-customer-info-use-case"
-import { ProcessPaymentUseCase } from "@/application/use-cases/process-payment-use-case"
-import { StripePaymentRepository } from "@/infrastructure/repositories/stripe-payment-repository"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/framework/next/components/ui/card';
+import { Separator } from '@/framework/next/components/ui/separator';
+import { CreateOrderUseCase } from '@/application/use-cases/create-order-use-case';
+import { CheckoutPresenter } from '@/framework/presenters/checkout-presenter';
+import { ValidateCustomerInfoUseCase } from '@/application/use-cases/validate-customer-info-use-case';
+import { ProcessPaymentUseCase } from '@/application/use-cases/process-payment-use-case';
+import { StripePaymentRepository } from '@/infrastructure/repositories/stripe-payment-repository';
 
 export function OrderSummaryComponent() {
   // Inicializamos los use cases y el presenter
-  const validateCustomerInfoUseCase = new ValidateCustomerInfoUseCase()
-  const createOrderUseCase = new CreateOrderUseCase()
-  const paymentRepository = new StripePaymentRepository()
-  const processPaymentUseCase = new ProcessPaymentUseCase(paymentRepository)
-  const presenter = new CheckoutPresenter(validateCustomerInfoUseCase, createOrderUseCase, processPaymentUseCase)
+  const validateCustomerInfoUseCase = new ValidateCustomerInfoUseCase();
+  const createOrderUseCase = new CreateOrderUseCase();
+  const paymentRepository = new StripePaymentRepository();
+  const processPaymentUseCase = new ProcessPaymentUseCase(paymentRepository);
+  const presenter = new CheckoutPresenter(
+    validateCustomerInfoUseCase,
+    createOrderUseCase,
+    processPaymentUseCase
+  );
 
   // Obtenemos los datos del resumen de la orden
-  const orderSummary = presenter.getOrderSummary()
+  const orderSummary = presenter.getOrderSummary();
 
   return (
     <Card>
@@ -31,7 +40,9 @@ export function OrderSummaryComponent() {
               <span className="text-sm">
                 {item.name} × {item.quantity}
               </span>
-              <span className="text-sm font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+              <span className="text-sm font-medium">
+                ${(item.price * item.quantity).toFixed(2)}
+              </span>
             </div>
           ))}
         </div>
@@ -61,6 +72,5 @@ export function OrderSummaryComponent() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-

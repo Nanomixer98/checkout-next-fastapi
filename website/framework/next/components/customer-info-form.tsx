@@ -1,53 +1,75 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { CustomerInfo } from "@/domain/entities/customer"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/framework/next/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/framework/next/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/framework/next/components/ui/form';
+import { Input } from '@/framework/next/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/framework/next/components/ui/select';
+import type { CustomerInfo } from '@/domain/entities/customer';
 
 const customerInfoSchema = z.object({
-  firstName: z.string().min(2, "First name is required"),
-  lastName: z.string().min(2, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  address: z.string().min(5, "Address is required"),
-  city: z.string().min(2, "City is required"),
-  state: z.string().min(2, "State is required"),
-  zipCode: z.string().min(5, "ZIP code is required"),
-  country: z.string().min(2, "Country is required"),
-})
+  firstName: z.string().min(2, 'First name is required'),
+  lastName: z.string().min(2, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().min(10, 'Phone number must be at least 10 digits'),
+  address: z.string().min(5, 'Address is required'),
+  city: z.string().min(2, 'City is required'),
+  state: z.string().min(2, 'State is required'),
+  zipCode: z.string().min(5, 'ZIP code is required'),
+  country: z.string().min(2, 'Country is required'),
+});
 
-type CustomerInfoValues = z.infer<typeof customerInfoSchema>
+type CustomerInfoValues = z.infer<typeof customerInfoSchema>;
 
 interface CustomerInfoFormProps {
-  onComplete: (data: CustomerInfo) => void
-  initialData?: CustomerInfo | null
+  onComplete: (data: CustomerInfo) => void;
+  initialData?: CustomerInfo | null;
 }
 
-export function CustomerInfoFormComponent({ onComplete, initialData }: CustomerInfoFormProps) {
+export function CustomerInfoFormComponent({
+  onComplete,
+  initialData,
+}: CustomerInfoFormProps) {
   const form = useForm<CustomerInfoValues>({
     resolver: zodResolver(customerInfoSchema),
     defaultValues: initialData || {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      country: "US",
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: 'US',
     },
-  })
+  });
 
   const onSubmit = (data: CustomerInfoValues) => {
-    onComplete(data)
-  }
+    onComplete(data);
+  };
 
   return (
     <Card>
@@ -94,7 +116,11 @@ export function CustomerInfoFormComponent({ onComplete, initialData }: CustomerI
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john.doe@example.com" {...field} />
+                      <Input
+                        type="email"
+                        placeholder="john.doe@example.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -177,7 +203,10 @@ export function CustomerInfoFormComponent({ onComplete, initialData }: CustomerI
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Country</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a country" />
@@ -203,6 +232,5 @@ export function CustomerInfoFormComponent({ onComplete, initialData }: CustomerI
         </form>
       </Form>
     </Card>
-  )
+  );
 }
-

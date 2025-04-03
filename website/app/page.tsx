@@ -1,4 +1,4 @@
-import CheckoutPage from "@/framework/next/pages/checkout-page"
+import CheckoutPanel from '@/framework/next/components/checkout-panel';
 
 export default function Home() {
   return (
@@ -9,9 +9,8 @@ export default function Home() {
           <p className="text-gray-500 mt-2">Complete your purchase securely</p>
         </div>
 
-        <CheckoutPage />
+        <CheckoutPanel />
       </div>
     </main>
-  )
+  );
 }
-

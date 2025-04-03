@@ -1,31 +1,59 @@
-"use client"
+'use client';
 
-import { useFormContext } from "react-hook-form"
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CreditCard, Lock } from "lucide-react"
+import { useFormContext } from 'react-hook-form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/framework/next/components/ui/form';
+import { Input } from '@/framework/next/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/framework/next/components/ui/select';
+import { CreditCard, Lock } from 'lucide-react';
 
 export function PaymentInfoFields() {
-  const { control, setValue, watch } = useFormContext()
+  const { control, setValue, watch } = useFormContext();
 
   // Format card number with spaces
   const formatCardNumber = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "")
-    const matches = v.match(/\d{4,16}/g)
-    const match = (matches && matches[0]) || ""
-    const parts = []
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    const matches = v.match(/\d{4,16}/g);
+    const match = (matches && matches[0]) || '';
+    const parts = [];
 
     for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4))
+      parts.push(match.substring(i, i + 4));
     }
 
     if (parts.length) {
-      return parts.join(" ")
+      return parts.join(' ');
     } else {
-      return value
+      return value;
     }
-  }
+  };
+
+  const validateJustNumbers = (e: any) => {
+    // Permitir solo números, teclas de navegación y teclas de control
+    if (
+      !/^\d$/.test(e.key) && // No es un dígito
+      e.key !== 'Backspace' &&
+      e.key !== 'Delete' &&
+      e.key !== 'ArrowLeft' &&
+      e.key !== 'ArrowRight' &&
+      e.key !== 'Tab' &&
+      !e.ctrlKey && // Permitir Ctrl+C, Ctrl+V, etc.
+      !e.metaKey
+    ) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -50,24 +78,10 @@ export function PaymentInfoFields() {
                 placeholder="4242 4242 4242 4242"
                 {...field}
                 inputMode="numeric"
-                onKeyDown={(e) => {
-                  // Permitir solo números, teclas de navegación y teclas de control
-                  if (
-                    !/^\d$/.test(e.key) && // No es un dígito
-                    e.key !== "Backspace" &&
-                    e.key !== "Delete" &&
-                    e.key !== "ArrowLeft" &&
-                    e.key !== "ArrowRight" &&
-                    e.key !== "Tab" &&
-                    !e.ctrlKey && // Permitir Ctrl+C, Ctrl+V, etc.
-                    !e.metaKey
-                  ) {
-                    e.preventDefault()
-                  }
-                }}
+                onKeyDown={validateJustNumbers}
                 onChange={(e) => {
-                  const formatted = formatCardNumber(e.target.value)
-                  field.onChange(formatted)
+                  const formatted = formatCardNumber(e.target.value);
+                  field.onChange(formatted);
                 }}
                 maxLength={19}
               />
@@ -106,12 +120,12 @@ export function PaymentInfoFields() {
                 </FormControl>
                 <SelectContent>
                   {Array.from({ length: 12 }, (_, i) => {
-                    const month = (i + 1).toString().padStart(2, "0")
+                    const month = (i + 1).toString().padStart(2, '0');
                     return (
                       <SelectItem key={month} value={month}>
                         {month}
                       </SelectItem>
-                    )
+                    );
                   })}
                 </SelectContent>
               </Select>
@@ -134,12 +148,12 @@ export function PaymentInfoFields() {
                 </FormControl>
                 <SelectContent>
                   {Array.from({ length: 10 }, (_, i) => {
-                    const year = (new Date().getFullYear() + i).toString()
+                    const year = (new Date().getFullYear() + i).toString();
                     return (
                       <SelectItem key={year} value={year}>
                         {year}
                       </SelectItem>
-                    )
+                    );
                   })}
                 </SelectContent>
               </Select>
@@ -155,7 +169,14 @@ export function PaymentInfoFields() {
             <FormItem>
               <FormLabel>CVV</FormLabel>
               <FormControl>
-                <Input placeholder="123" {...field} maxLength={4} type="password" />
+                <Input
+                  placeholder="123"
+                  inputMode="numeric"
+                  onKeyDown={validateJustNumbers}
+                  {...field}
+                  maxLength={4}
+                  type="password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -163,6 +184,5 @@ export function PaymentInfoFields() {
         />
       </div>
     </div>
-  )
+  );
 }
-

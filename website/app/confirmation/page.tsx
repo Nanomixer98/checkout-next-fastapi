@@ -1,16 +1,22 @@
-"use client"
+'use client';
 
-import { useSearchParams } from "next/navigation"
-import Link from "next/link"
-import { CheckCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { CheckCircle } from 'lucide-react';
+import { Button } from '@/framework/next/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/framework/next/components/ui/card';
 
 export default function ConfirmationPage() {
-  const searchParams = useSearchParams()
-  const orderId = searchParams.get("orderId") || "N/A"
-  const amount = searchParams.get("amount") || "0.00"
-  const status = searchParams.get("status") || "completed"
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get('orderId') || 'N/A';
+  const amount = searchParams.get('amount') || '0.00';
+  const status = searchParams.get('status') || 'completed';
 
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -33,10 +39,14 @@ export default function ConfirmationPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Status:</span>
-              <span className="font-medium capitalize text-green-600">{status}</span>
+              <span className="font-medium capitalize text-green-600">
+                {status}
+              </span>
             </div>
           </div>
-          <p className="text-sm text-gray-500 text-center">A confirmation email has been sent to your email address.</p>
+          <p className="text-sm text-gray-500 text-center">
+            A confirmation email has been sent to your email address.
+          </p>
         </CardContent>
         <CardFooter>
           <Button asChild className="w-full">
@@ -45,6 +55,5 @@ export default function ConfirmationPage() {
         </CardFooter>
       </Card>
     </main>
-  )
+  );
 }
-

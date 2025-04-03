@@ -1,12 +1,24 @@
-"use client"
+'use client';
 
-import { useFormContext } from "react-hook-form"
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useFormContext } from 'react-hook-form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/framework/next/components/ui/form';
+import { Input } from '@/framework/next/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/framework/next/components/ui/select';
 
 export function CustomerInfoFields() {
-  const { control } = useFormContext()
+  const { control } = useFormContext();
 
   return (
     <div className="space-y-6">
@@ -18,7 +30,11 @@ export function CustomerInfoFields() {
             <FormItem>
               <FormLabel>First Name</FormLabel>
               <FormControl>
-                <Input placeholder="John" {...field} autoComplete="given-name" />
+                <Input
+                  placeholder="John"
+                  {...field}
+                  autoComplete="given-name"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -47,7 +63,11 @@ export function CustomerInfoFields() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="john.doe@example.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,6 +168,5 @@ export function CustomerInfoFields() {
         )}
       />
     </div>
-  )
+  );
 }
-
