@@ -32,6 +32,38 @@ Each backend and frontend has its own Dockerfile, and the root project contains 
 - Add JWT validation to each route
 - Complete schemas to follow up a better defined contract
 
+### API Documentation
+
+Below are the available endpoints:
+
+#### Transactions
+
+- **GET /transactions**
+
+  - Retrieves a list of transactions
+  - Optional query parameters available
+  - Returns a `TransactionsResult` object
+
+- **POST /transactions**
+
+  - Creates a new transaction
+  - Request Body (JSON):
+    ```json
+    {
+      "amount": float,          // Transaction amount (required)
+      "currency": string,       // Transaction currency (required)
+      "description": string,    // Optional transaction description
+      "customer_email": string, // Customer's email (required)
+      "customer_name": string   // Customer's name (required)
+    }
+    ```
+  - Returns the created `Transaction` object
+
+- **GET /transactions/{transaction_id}**
+  - Retrieves a specific transaction by its ID
+  - ID must be a valid UUID
+  - Returns the requested `Transaction` object
+
 ## Development Setup
 
 ### Prerequisites
